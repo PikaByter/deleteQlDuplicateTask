@@ -13,8 +13,9 @@ var (
 	login loginResp
 	tasks getTaskResp
 	trash trashResp
-	password string
 	ip string
+	username string
+	password string
 )
 
 func loadConfig()error{
@@ -27,8 +28,10 @@ func loadConfig()error{
 	configList:=strings.Split(config,"\r\n")
 	//ip=8.8.8.8
 	ip=configList[0][3:]
+	//username=admin
+	username=configList[1][9:]
 	//password=tji1f3GNK8k-1Xqx4AkT
-	password=configList[1][9:]
+	password=configList[2][9:]
 	return nil
 }
 
@@ -52,7 +55,7 @@ func run(){
 	//登录获取token
 	Info.Println("登录获取Token")
 	data := map[string]string{
-		"username": "admin",
+		"username": username,
 		"password": password,
 	}
 	err = getToken(requst, header,data)
@@ -81,6 +84,7 @@ func run(){
 		return
 	}
 	Info.Println("-------分割线--------")
+	return
 }
 
 func deleteDuplicateTasks(requst *resty.Request,header map[string]string,rawData string)error {
